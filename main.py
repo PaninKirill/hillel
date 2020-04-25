@@ -86,3 +86,4 @@ if __name__ == '__main__':
                ' Expires': 'Friday, May 22, 2020 at 11:26:13 PM'}
     assert parse_cookie('123') == {'123': ''}
     assert parse_cookie('name=;secure;httponly') == {'name': '', 'secure': '', 'httponly': ''}
+
