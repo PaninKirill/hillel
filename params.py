@@ -23,3 +23,4 @@ def hei_wei(hum_params: int = 1):
     elif hum_params == 3:
         return f'Weight(MAX): {round(max(result.values()), 2)} kg, ' \
                f'Height(MAX): {round(max(result.keys()), 2)} cm'
+

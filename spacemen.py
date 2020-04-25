@@ -12,3 +12,4 @@ def curr_spacemen():
         ppl_cur += i.get('name') + ', '
 
     return f'Current number of spacemen as of {now.strftime("%d-%m-%Y %H:%M")}: {res}. They are: {ppl_cur}'
+

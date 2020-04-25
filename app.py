@@ -45,12 +45,13 @@ def spacemen():
 
 @app.route('/requirements/')
 def read_data():
-    with open('req.txt', encoding='utf-8') as f2:
-        data = f2.read()
-        f2.close()
+    with open('req.txt', encoding='utf-8') as f:
+        data = f.read()
+        f.close()
         return data
 
 
 if __name__ == '__main__':
     app.debug = False
     app.run()
+
