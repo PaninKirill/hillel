@@ -3,14 +3,14 @@ def parse(query: str) -> dict:
     try:
         query = query.split('?')[1]
         for j in query.split('&'):
-            try:
-                key, val = j.split('=')
-                result[key] = val
-            except (ValueError, IndexError):
-                if len(j) >= 1:
+            if len(j) != 0:
+                if len(j.split('=')) == 1 and j != '':
                     key, val = j, None
                     result[key] = ''
-    except (ValueError, IndexError):
+                else:
+                    key, val = j.split('=')
+                    result[key] = val
+    except IndexError:
         pass
     return result
 
@@ -42,7 +42,22 @@ if __name__ == '__main__':
 
 
 def parse_cookie(query: str) -> dict:
-    return {}
+    result = {}
+
+    for j in query.split(';'):
+        if len(j) != 0:
+            if len(j.split('=')) >= 3:
+                res = [j for j in j.split('=')]
+                key = res[0]
+                index = j.index('=')
+                result[key] = j[index + 1:]
+            if len(j.split('=')) == 2:
+                key, val = j.split('=')
+                result[key] = val
+            if len(j.split('=')) == 1:
+                key, val = j, None
+                result[key] = ''
+    return result
 
 
 if __name__ == '__main__':
@@ -50,5 +65,24 @@ if __name__ == '__main__':
     assert parse_cookie('') == {}
     assert parse_cookie('name=Dima;age=28;') == {'name': 'Dima', 'age': '28'}
     assert parse_cookie('name=Dima=User;age=28;') == {'name': 'Dima=User', 'age': '28'}
-
-
+    assert parse_cookie('name=Dima=User=Super;age=28;') == {'name': 'Dima=User=Super', 'age': '28'}
+    assert parse_cookie('name=Dima;age=28;Gender=male') == {'name': 'Dima', 'age': '28', 'Gender': 'male'}
+    assert parse_cookie(
+        'NAME=VALUE;expires=DATE;path=PATH;domain=DOMAIN_NAME;secure=;') == {
+               'NAME': 'VALUE', 'expires': 'DATE', 'path': 'PATH', 'domain': 'DOMAIN_NAME', 'secure': ''}
+    assert parse_cookie(
+        '__Secure-name=value;max-age=31536000;domain=example.com;path=/') == {
+               '__Secure-name': 'value', 'max-age': '31536000', 'domain': 'example.com', 'path': '/'}
+    assert parse_cookie('name=new_value;temperature=20"Celsius"') == {'name': 'new_value', 'temperature': '20"Celsius"'}
+    assert parse_cookie('encoding=utf-8;') == {'encoding': 'utf-8'}
+    assert parse_cookie('lang=en-US;Path=/;Domain=example.com;SID=31d4d96e407aad42') == {'lang': 'en-US', 'Path': '/',
+                                                                                         'Domain': 'example.com',
+                                                                                         'SID': '31d4d96e407aad42'}
+    assert parse_cookie(
+        'name=1P_JAR;Content=2020-4-22-20;Domain=.google.com;Path=/;Send for=Secure connections only;Created=Wednesday,'
+        ' April 22, 2020 at 11:26:13 PM; Expires=Friday, May 22, 2020 at 11:26:13 PM') == {
+               'name': '1P_JAR', 'Content': '2020-4-22-20', 'Domain': '.google.com', 'Path': '/',
+               'Send for': 'Secure connections only', 'Created': 'Wednesday, April 22, 2020 at 11:26:13 PM',
+               ' Expires': 'Friday, May 22, 2020 at 11:26:13 PM'}
+    assert parse_cookie('123') == {'123': ''}
+    assert parse_cookie('name=;secure;httponly') == {'name': '', 'secure': '', 'httponly': ''}
