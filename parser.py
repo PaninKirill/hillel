@@ -22,3 +22,4 @@ def parse_hum_params(hum_params: str) -> int or str:
         return f'Incorrect value: {hum_params}. Enter number in range [1, 3]'
 
     return hum_params
+
