@@ -3,11 +3,13 @@ from generate_users import fake_people
 from spacemen import curr_spacemen
 from params import hei_wei
 from parser import parse_usr_value, parse_hum_params
+from db import run_query, ordering, filter_and
 
 app = Flask(__name__, template_folder="templates")
 
 
 @app.route('/owner/')
+@app.route('/')
 def owner():
     owner_name = "Panin Kirill"
     return render_template('index.html', message=owner_name)
@@ -51,7 +53,84 @@ def read_data():
         return data
 
 
-if __name__ == '__main__':
-    app.debug = False
-    app.run()
+@app.route('/customers/')
+def customers():
+    query = '''
+    SELECT * FROM customers
+    '''
 
+    country = request.args.get('country')
+    if country:
+        param = f" WHERE Country = '{country}'"
+        query += param
+
+    fil_and = request.args.get('filter')
+    if fil_and:
+        param = f" WHERE {filter_and(fil_and)}"
+        query += param
+
+    order = request.args.get('ordering')
+    if order:
+        param = f" ORDER BY {ordering(order)}"
+        query += param
+
+    query += ';'
+    return str(run_query(query))
+
+
+@app.route('/employees/')
+def employees():
+    query = '''
+        SELECT * FROM employees;
+    '''
+    return str(run_query(query))
+
+
+@app.route('/f/')
+def foo():
+    query = '''
+        SELECT UnitPrice, Quantity FROM invoice_items;
+    '''
+    results = run_query(query)
+    sum_ = 0
+    for price, quantity in results:
+        sum_ += price * quantity
+
+    return str(sum_)
+
+
+@app.route('/f2/')
+def foo2():
+    query = '''
+        SELECT SUM(UnitPrice * Quantity) FROM invoice_items;
+    '''
+    return str(run_query(query))
+
+
+@app.route('/tracks/')
+def tracks():
+    query = '''
+        SELECT COUNT(*) FROM tracks;
+    '''
+    return f'Tracks: {run_query(query)}'
+
+
+@app.route('/names/')
+def names():
+    query = '''
+        SELECT COUNT (DISTINCT FirstName) FROM customers;
+    '''
+    return f'Distinguished names: {run_query(query)}'
+
+
+@app.route('/tracks-sec/')
+def tracks_sec():
+    query = '''
+        SELECT Name, Milliseconds FROM  tracks;
+    '''
+    return f'Songs: {run_query(query)}'
+
+
+if __name__ == '__main__':
+    app.debug = True
+    app.run()
