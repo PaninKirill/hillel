@@ -1,28 +1,25 @@
-Результат: один Пул Реквест!
+Создать Пул Реквест
 
 
 
-(2) 1. Возвращать содержимое файла с пайтон пакетами (requirements.txt) PATH: /requirements/ открыть файл requirements.txt и вернуть его содержимое
+(2) 1. Создать вью функцию которая будет генерировать одного студента с случайными параметрами.
+
+PATH: /generate-student/ student = Student.objects.create(first_name=faker.first_name) -> id, first_name, last_name, age
+
+(3) 2. Создать вью функцию которая будет генерировать случайных студентов по заданому количеству.
+
+PATH: /generate-students/?count=100 -> "список" из id, first_name, last_name, age.
+
+Добавить валидацию count (не быть отрицательным, не больше 100, быть целым числом)
+
+(3) 3. создать модель Group в приложении group добавить несколько полей (название и тип по-желанию)
+
+(2) 4. создать модель Teacher в приложении teachers добавить несколько полей (название и тип по-желанию)
 
 
 
-(2) 2. Вывести 100 случайно сгенерированных юзеров (почта + имя) 'Dmytro aasdasda@mail.com' PATH: /generate-users/ ( https://pypi.org/project/Faker/ ) + параметр который регулирует количество юзеров
+Bonus:
 
+1. Вывести все группы
 
-
-(4) 3. Средний рост, средний вес (см, кг) (hw.csv) PATH: /mean/
-
-
-
-(2) 4. Вывести количество космонавтов в настоящий момент (http://api.open-notify.org/astros.json) (https://pypi.org/project/requests/) PATH: /space/
-
-
-
-import requests
-
-r = requests.get('https://api.github.com/repos/psf/requests')
-
-r.json()["description"]
-
-
-
+2. Вывести всех учитЕлей
