@@ -1,13 +1,16 @@
-from django.http import HttpResponse
-from teachers.models import Teacher
-from faker import Faker
 import random
-from utils import parse_usr_value, clear_table_parser, list_rank
-from django.db import connection
+
+from django.apps import apps
+from django.http import HttpResponse
+
+from faker import Faker
+
+from teachers.models import Teacher
+
+from utils import clear_table_parser, parse_usr_value
 
 
 def teacher_app(request):
-    print(request)
     return HttpResponse('Teacher app')
 
 
@@ -25,22 +28,22 @@ def teachers(request):
 
 def generate_teacher(request):
     fake = Faker()
-    rand_age = random.randint(25, 75)
-    teacher = Teacher.objects.create(first_name=fake.first_name(),
-                                     last_name=fake.last_name(),
-                                     age=rand_age,
-                                     rank=random.choice(list_rank),
-                                     )
+    teacher = Teacher.objects.create(
+        first_name=fake.first_name(),
+        last_name=fake.last_name(),
+        age=random.randint(25, 75),
+        rank=random.choice(Teacher.TEACHERS_RANK)[0],
+    )
     response = f'Teacher: {teacher.info()}<br/>'
 
     return HttpResponse(response)
 
 
 def sheets(request):
-    tables = connection.introspection.table_names()
-    seen_models = connection.introspection.installed_models(tables)
-    response = f'Current sheets: {seen_models}<br/>'
-
+    sheets_reg = [
+        m._meta.db_table for c in apps.get_app_configs() for m in c.get_models()
+    ]
+    response = f'Current sheets: {sheets_reg}<br/>'
     return HttpResponse(response)
 
 
@@ -81,16 +84,53 @@ def delete_row(request):
 def query_filter(request):
     """
     :param request:
-    filter/tc/?letter=re
+    /filter/tc/?age=50&first_name=Elizabeth
+    /filter/tc/?order_by=age
+    /filter/tc/?age=20&order_by=-first_name
     :return:
-    list of teachers with params equal to request: id, first_name, last_name, age, rank
+    list of teachers with params equal to request:
+    id, first_name, last_name, age, rank, etc..
     """
-    # sheet_name = clear_table_parser(request.GET['sheet_name'], 'alpha')
-    letter = clear_table_parser(request.GET['letter'], 'alpha')
-    response = f'Selected data:<br/>'
-    filter_queryset = Teacher.objects.filter(first_name__startswith=str(letter))
+    params = [
+        'age',
+        'age__gt',
+        'age__lt',
+        'age__lte',
+        'age__gte',
+        'first_name',
+        'first_name__exact',
+        'first_name__startswith',
+        'first_name__endswith',
+        'last_name',
+        'last_name__startswith',
+        'last_name__endswith',
+        'rank',
+        'rank__startswith',
+        'rank__endswith',
+        'id',
+        'order_by',
+     ]
 
-    for teacher in filter_queryset:
+    response = f'Selected data:<br/>'
+    teachers_queryset = Teacher.objects.all()
+
+    # simple filter
+
+    for param in params:
+        value = request.GET.get(param)
+        if param not in 'order_by':
+            if value:
+                teachers_queryset = teachers_queryset.filter(**{param: value})
+
+    # adds filter order_by
+
+    for param in params:
+        value = request.GET.get(param)
+        if param in 'order_by':
+            if value:
+                teachers_queryset = teachers_queryset.order_by(value)
+
+    for teacher in teachers_queryset:
         response += teacher.info() + '<br/>'
 
     return HttpResponse(response)
@@ -111,11 +151,12 @@ def generate_teachers(request):
         return HttpResponse(usr_value)
 
     for _ in range(usr_value):
-        Teacher.objects.create(first_name=fake.first_name(),
-                               last_name=fake.last_name(),
-                               age=random.randint(25, 75),
-                               rank=random.choice(list_rank),
-                               )
+        Teacher.objects.create(
+            first_name=fake.first_name(),
+            last_name=fake.last_name(),
+            age=random.randint(25, 75),
+            rank=random.choice(Teacher.TEACHERS_RANK)[0],
+        )
 
     for teacher in rand_teachers_queryset:
         response += teacher.info() + '<br/>'

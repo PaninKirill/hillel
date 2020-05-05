@@ -1,13 +1,16 @@
-from django.http import HttpResponse
-from students.models import Student
-from faker import Faker
 import random
-from utils import parse_usr_value, clear_table_parser
-from django.db import connection
+
+from django.apps import apps
+from django.http import HttpResponse
+
+from faker import Faker
+
+from students.models import Student
+
+from utils import clear_table_parser, parse_usr_value
 
 
 def students_app(request):
-    print(request)
     return HttpResponse('Students app')
 
 
@@ -25,21 +28,22 @@ def students(request):
 
 def generate_student(request):
     fake = Faker()
-    rand_age = random.randint(18, 25)
-    student = Student.objects.create(first_name=fake.first_name(),
-                                     last_name=fake.last_name(),
-                                     age=rand_age,
-                                     )
+    student = Student.objects.create(
+        first_name=fake.first_name(),
+        last_name=fake.last_name(),
+        age=random.randint(18, 25),
+        grade=random.choice(Student.YEAR_IN_SCHOOL_CHOICES)[1]
+    )
     response = f'Student: {student.info()}<br/>'
 
     return HttpResponse(response)
 
 
 def sheets(request):
-    tables = connection.introspection.table_names()
-    seen_models = connection.introspection.installed_models(tables)
-    response = f'Current sheets: {seen_models}<br/>'
-
+    sheets_reg = [
+        m._meta.db_table for c in apps.get_app_configs() for m in c.get_models()
+    ]
+    response = f'Current sheets: {sheets_reg}<br/>'
     return HttpResponse(response)
 
 
@@ -81,16 +85,53 @@ def delete_row(request):
 def query_filter(request):
     """
     :param request:
-    /filter/st/?letter=A
+    /filter/st/?age=22&first_name=Elizabeth
+    /filter/st/?order_by=age
+    /filter/st/?age=20&order_by=-first_name
     :return:
-    list of students with params equal to request: id, first_name, last_name, age
+    list of students with params equal to request:
+    id, first_name, last_name, age, grade, etc..
     """
-    # sheet_name = clear_table_parser(request.GET['sheet_name'], 'alpha')
-    letter = clear_table_parser(request.GET['letter'], 'alpha')
-    response = f'Selected data:<br/>'
-    filter_queryset = Student.objects.filter(first_name__startswith=str(letter))
+    params = [
+        'age',
+        'age__gt',
+        'age__lt',
+        'age__lte',
+        'age__gte',
+        'first_name',
+        'first_name__exact',
+        'first_name__startswith',
+        'first_name__endswith',
+        'last_name',
+        'last_name__startswith',
+        'last_name__endswith',
+        'grade',
+        'grade__startswith',
+        'grade__endswith',
+        'id',
+        'order_by',
+    ]
 
-    for student in filter_queryset:
+    response = f'Selected data:<br/>'
+    students_queryset = Student.objects.all()
+
+    # simple filter
+
+    for param in params:
+        value = request.GET.get(param)
+        if param not in 'order_by':
+            if value:
+                students_queryset = students_queryset.filter(**{param: value})
+
+    # adds filter order_by
+
+    for param in params:
+        value = request.GET.get(param)
+        if param in 'order_by':
+            if value:
+                students_queryset = students_queryset.order_by(value)
+
+    for student in students_queryset:
         response += student.info() + '<br/>'
 
     return HttpResponse(response)
@@ -111,10 +152,12 @@ def generate_students(request):
         return HttpResponse(usr_value)
 
     for _ in range(usr_value):
-        Student.objects.create(first_name=fake.first_name(),
-                               last_name=fake.last_name(),
-                               age=random.randint(18, 25),
-                               )
+        Student.objects.create(
+            first_name=fake.first_name(),
+            last_name=fake.last_name(),
+            age=random.randint(18, 25),
+            grade=random.choice(Student.YEAR_IN_SCHOOL_CHOICES)[1]
+        )
 
     for student in rand_students_queryset:
         response += student.info() + '<br/>'

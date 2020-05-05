@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.urls import path
 
-from students import views as s_views
-from teachers import views as t_views
 from groups import views as g_views
+
+from students import views as s_views
+
+from teachers import views as t_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
