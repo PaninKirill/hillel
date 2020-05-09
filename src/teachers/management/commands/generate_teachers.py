@@ -21,12 +21,14 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if options['amount']:
             fake = Faker()
+            teachers = []
             for _ in range(options['amount']):
-                Teacher.objects.create(
+                teachers.append(Teacher(
                     first_name=fake.first_name(),
                     last_name=fake.last_name(),
                     age=random.randint(25, 75),
                     rank=random.choice(Teacher.TEACHERS_RANK)[1],
-                )
+                ))
+            Teacher.objects.bulk_create(teachers)
         if options['wipe']:
             Teacher.objects.all().delete()
