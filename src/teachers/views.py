@@ -1,7 +1,8 @@
 import random
 
 from django.apps import apps
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 
 from faker import Faker
 
@@ -162,3 +163,25 @@ def generate_teachers(request):
         response += teacher.info() + '<br/>'
 
     return HttpResponse(response)
+
+
+def t_index(request):
+    return render(request, 't_index.html')
+
+
+def create_teacher(request):
+    from teachers.forms import TeacherCreateForm
+
+    if request.method == 'POST':
+
+        form = TeacherCreateForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/teacher/')
+    else:
+        form = TeacherCreateForm()
+
+    context = {'create_form': form}
+
+    return render(request, 'create_student.html', context=context)

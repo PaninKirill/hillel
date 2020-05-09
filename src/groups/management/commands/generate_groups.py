@@ -18,13 +18,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if options['amount']:
+            groups = []
             for _ in range(options['amount']):
-                set_faculty = random.choice(list(Group.FACULTY_N_SPECIALIZATION.keys()))
-                set_degree_specialization = random.choice(Group.FACULTY_N_SPECIALIZATION.get(set_faculty))
-                Group.objects.create(
+                set_params = {i[0]: i[1] for i in Group.FACULTY_N_SPECIALIZATION}
+                set_faculty = random.choice(list(set_params.keys()))
+                set_degree = random.choice(list(set_params.get(set_faculty)))
+                groups.append(Group(
                     faculty=set_faculty,
-                    degree_specialization=set_degree_specialization,
+                    degree_specialization=set_degree[1],
                     course=random.randint(1, 5),
-                )
+                ))
+            Group.objects.bulk_create(groups)
         if options['wipe']:
             Group.objects.all().delete()

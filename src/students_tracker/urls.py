@@ -9,6 +9,12 @@ from teachers import views as t_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('student/', s_views.st_index),
+    path('student/create_student/', s_views.create_student),
+    path('teacher/', t_views.t_index),
+    path('teacher/create_teacher/', t_views.create_teacher),
+    path('group/', g_views.g_index),
+    path('group/create_group/', g_views.create_group),
 
     path('main/st/', s_views.students_app),
     path('main/tc/', t_views.teacher_app),
