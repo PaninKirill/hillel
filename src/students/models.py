@@ -45,10 +45,10 @@ class Student(models.Model):
     @classmethod
     def add_student(cls):
         fake = Faker()
-        student = cls(
+        student = cls.objects.create(
             first_name=fake.first_name(),
             last_name=fake.last_name(),
             age=random.randint(18, 25),
+            grade=random.choice(Student.YEAR_IN_SCHOOL_CHOICES)[1],
         )
-        student.save()
         return student

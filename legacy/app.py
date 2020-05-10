@@ -12,7 +12,7 @@ app = Flask(__name__, template_folder="templates")
 @app.route('/')
 def owner():
     owner_name = "Panin Kirill"
-    return render_template('index.html', message=owner_name)
+    return render_template('st_index.html', message=owner_name)
 
 
 @app.route('/generate-users/')

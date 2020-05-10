@@ -1,7 +1,8 @@
 import random
 
 from django.apps import apps
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 
 from faker import Faker
 
@@ -163,3 +164,25 @@ def generate_students(request):
         response += student.info() + '<br/>'
 
     return HttpResponse(response)
+
+
+def st_index(request):
+    return render(request, 'st_index.html')
+
+
+def create_student(request):
+    from students.forms import StudentCreateForm
+
+    if request.method == 'POST':
+
+        form = StudentCreateForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/student/')
+    else:
+        form = StudentCreateForm()
+
+    context = {'create_form': form}
+
+    return render(request, 'create_student.html', context=context)
