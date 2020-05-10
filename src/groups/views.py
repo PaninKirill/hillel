@@ -1,7 +1,8 @@
 import random
 
 from django.apps import apps
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 
 from groups.models import Group
 
@@ -25,11 +26,12 @@ def groups(request):
 
 
 def generate_group(request):
-    set_faculty = random.choice(list(Group.FACULTY_N_SPECIALIZATION.keys()))
-    set_degree_specialization = random.choice(Group.FACULTY_N_SPECIALIZATION.get(set_faculty))
+    set_params = {i[0]: i[1] for i in Group.FACULTY_N_SPECIALIZATION}
+    set_faculty = random.choice(list(set_params.keys()))
+    set_degree = random.choice(list(set_params.get(set_faculty)))
     group = Group.objects.create(
         faculty=set_faculty,
-        degree_specialization=set_degree_specialization,
+        degree_specialization=set_degree[1],
         course=random.randint(1, 5),
     )
     response = f'Group: {group.info()}<br/>'
@@ -146,15 +148,44 @@ def generate_groups(request):
         return HttpResponse(usr_value)
 
     for _ in range(usr_value):
-        set_faculty = random.choice(list(Group.FACULTY_N_SPECIALIZATION.keys()))
-        set_degree_specialization = random.choice(Group.FACULTY_N_SPECIALIZATION.get(set_faculty))
-        Group.objects.create(
+        set_params = {i[0]: i[1] for i in Group.FACULTY_N_SPECIALIZATION}
+        set_faculty = random.choice(list(set_params.keys()))
+        set_degree = random.choice(list(set_params.get(set_faculty)))
+        groups.append(Group(
             faculty=set_faculty,
-            degree_specialization=set_degree_specialization,
+            degree_specialization=set_degree[1],
             course=random.randint(1, 5),
-        )
+        ))
+    Group.objects.bulk_create(groups)
 
     for group in rand_groups_queryset:
         response += group.info() + '<br/>'
 
     return HttpResponse(response)
+
+
+def g_index(request):
+    return render(request, 'g_index.html')
+
+
+def create_group(request):
+    from groups.forms import GroupCreateForm
+
+    if request.method == 'POST':
+
+        form = GroupCreateForm(request.POST)
+
+        if form.is_valid():
+            related_data = {i[0]: i[1] for i in Group.FACULTY_N_SPECIALIZATION}
+            faculty = form.data.get('faculty')
+            check_related = related_data.get(faculty)
+            for spec in check_related:
+                if spec[0] == form.data.get('degree_specialization'):
+                    form.save()
+                    return HttpResponseRedirect('/group/')
+    else:
+        form = GroupCreateForm()
+
+    context = {'create_form': form}
+
+    return render(request, 'create_group.html', context=context)
