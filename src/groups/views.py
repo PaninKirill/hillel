@@ -1,16 +1,23 @@
 import random
 
 from django.apps import apps
+from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 
+from groups.forms import GroupCreateForm
 from groups.models import Group
 
 from utils import clear_table_parser, parse_usr_value
 
 
-def group_app(request):
-    return HttpResponse('Group app')
+def home(request):
+    return render(request, 'index.html')
+
+
+def group_app(request):  # main page
+    return render(request, 'group_index.html')
 
 
 def groups(request):
@@ -22,7 +29,9 @@ def groups(request):
     for group in groups_queryset:
         response += group.info() + '<br/>'
 
-    return HttpResponse(response)
+    context = {'groups': groups_queryset, 'count': count}
+
+    return render(request, 'groups_list.html', context=context)
 
 
 def generate_group(request):
@@ -34,12 +43,11 @@ def generate_group(request):
         degree_specialization=set_degree[1],
         course=random.randint(1, 5),
     )
-    response = f'Group: {group.info()}<br/>'
 
-    return HttpResponse(response)
+    return render(request, 'generate_group.html', context={'group': group})
 
 
-def sheets(request):
+def sheets(request):  # abandoned
     sheets_reg = [
         m._meta.db_table for c in apps.get_app_configs() for m in c.get_models()
     ]
@@ -47,7 +55,7 @@ def sheets(request):
     return HttpResponse(response)
 
 
-def clear_sheet(request):
+def clear_sheet(request):  # abandoned
     """
     :param request:
     /clear_sheet/gr/?clear=1&sheet_name=Group
@@ -65,7 +73,7 @@ def clear_sheet(request):
     return HttpResponse(response)
 
 
-def delete_row(request):
+def delete_row(request):  # abandoned
     """
     :param request:
     /del_row/gr/?id=49
@@ -82,7 +90,7 @@ def delete_row(request):
     return HttpResponse(response)
 
 
-def query_filter(request):
+def query_filter(request):  # abandoned
     """
     :param request:
     /filter/tc/?age=50&first_name=Elizabeth
@@ -134,7 +142,7 @@ def query_filter(request):
     return HttpResponse(response)
 
 
-def generate_groups(request):
+def generate_groups(request):  # abandoned
     """
     :param request:
     PATH: /generate_groups/gr/?count=10
@@ -164,13 +172,7 @@ def generate_groups(request):
     return HttpResponse(response)
 
 
-def g_index(request):
-    return render(request, 'g_index.html')
-
-
 def create_group(request):
-    from groups.forms import GroupCreateForm
-
     if request.method == 'POST':
 
         form = GroupCreateForm(request.POST)
@@ -182,10 +184,45 @@ def create_group(request):
             for spec in check_related:
                 if spec[0] == form.data.get('degree_specialization'):
                     form.save()
-                    return HttpResponseRedirect('/group/')
+                    messages.success(request, 'You have successfully created group')
+                    return HttpResponseRedirect(reverse('groups:list'))
+            messages.warning(request, 'Faculty does not much')
     else:
         form = GroupCreateForm()
 
-    context = {'create_form': form}
+    context = {'form': form}
 
     return render(request, 'create_group.html', context=context)
+
+
+def edit_group(request, pk):
+    group = get_object_or_404(Group, id=pk)
+    if request.method == 'POST':
+
+        form = GroupCreateForm(request.POST, instance=group)
+
+        if form.is_valid():
+            related_data = {i[0]: i[1] for i in Group.FACULTY_N_SPECIALIZATION}
+            faculty = form.data.get('faculty')
+            check_related = related_data.get(faculty)
+            for spec in check_related:
+                if spec[0] == form.data.get('degree_specialization'):
+                    form.save()
+                    messages.success(request, 'You have successfully changed group')
+                    return HttpResponseRedirect(reverse('groups:list'))
+
+            messages.warning(request, 'Faculty does not much')
+    else:
+        form = GroupCreateForm(instance=group)
+
+    context = {'form': form, 'group': group}
+
+    return render(request, 'edit_group.html', context=context)
+
+
+def remove_group(request, pk):
+    group = get_object_or_404(Group, id=pk)
+    group.delete()
+    messages.success(request, 'You have successfully deleted group')
+
+    return HttpResponseRedirect(reverse('groups:list'))

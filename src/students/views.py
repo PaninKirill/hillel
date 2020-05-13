@@ -1,18 +1,25 @@
 import random
 
 from django.apps import apps
+from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 
 from faker import Faker
 
+from students.forms import StudentCreateForm
 from students.models import Student
 
 from utils import clear_table_parser, parse_usr_value
 
 
+def home(request):
+    return render(request, 'index.html')
+
+
 def students_app(request):
-    return HttpResponse('Students app')
+    return render(request, 'student_index.html')
 
 
 def students(request):
@@ -23,8 +30,9 @@ def students(request):
 
     for student in students_queryset:
         response += student.info() + '<br/>'
+    context = {'students': students_queryset, 'count': count}
 
-    return HttpResponse(response)
+    return render(request, 'student_list.html', context=context)
 
 
 def generate_student(request):
@@ -33,14 +41,14 @@ def generate_student(request):
         first_name=fake.first_name(),
         last_name=fake.last_name(),
         age=random.randint(18, 25),
-        grade=random.choice(Student.YEAR_IN_SCHOOL_CHOICES)[1]
+        grade=random.choice(Student.YEAR_IN_SCHOOL_CHOICES)[1],
+        email=fake.email(),
     )
-    response = f'Student: {student.info()}<br/>'
 
-    return HttpResponse(response)
+    return render(request, 'generate_student.html', context={'student': student})
 
 
-def sheets(request):
+def sheets(request):  # abandoned
     sheets_reg = [
         m._meta.db_table for c in apps.get_app_configs() for m in c.get_models()
     ]
@@ -48,7 +56,7 @@ def sheets(request):
     return HttpResponse(response)
 
 
-def clear_sheet(request):
+def clear_sheet(request):  # abandoned
     """
     :param request:
     /clear_sheet/st/?clear=1&sheet_name=Student
@@ -62,11 +70,10 @@ def clear_sheet(request):
         if req_clear_sheet == 1:
             Student.objects.all().delete()
             response += f'{sheet_name}'
-
     return HttpResponse(response)
 
 
-def delete_row(request):
+def delete_row(request):  # abandoned
     """
     :param request:
     /del_row/st/?id=49
@@ -83,7 +90,7 @@ def delete_row(request):
     return HttpResponse(response)
 
 
-def query_filter(request):
+def query_filter(request):  # abandoned
     """
     :param request:
     /filter/st/?age=22&first_name=Elizabeth
@@ -135,10 +142,10 @@ def query_filter(request):
     for student in students_queryset:
         response += student.info() + '<br/>'
 
-    return HttpResponse(response)
+    return render(request, 'student_list.html', context=students_queryset)
 
 
-def generate_students(request):
+def generate_students(request):  # abandoned
     """
     :param request:
     PATH: /generate-students/st/?count=10
@@ -157,17 +164,14 @@ def generate_students(request):
             first_name=fake.first_name(),
             last_name=fake.last_name(),
             age=random.randint(18, 25),
-            grade=random.choice(Student.YEAR_IN_SCHOOL_CHOICES)[1]
+            grade=random.choice(Student.YEAR_IN_SCHOOL_CHOICES)[1],
+            email=fake.email(),
         )
 
     for student in rand_students_queryset:
         response += student.info() + '<br/>'
 
     return HttpResponse(response)
-
-
-def st_index(request):
-    return render(request, 'st_index.html')
 
 
 def create_student(request):
@@ -179,10 +183,36 @@ def create_student(request):
 
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/student/')
+            messages.success(request, 'You have successfully created student')
+            return HttpResponseRedirect(reverse('students:list'))
     else:
         form = StudentCreateForm()
 
     context = {'create_form': form}
 
-    return render(request, 'create_student.html', context=context)
+    return render(request, 'create.html', context=context)
+
+
+def edit_student(request, pk):
+    student = get_object_or_404(Student, id=pk)
+    if request.method == 'POST':
+
+        form = StudentCreateForm(request.POST, instance=student)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('students:list'))
+    else:
+        form = StudentCreateForm(instance=student)
+
+    context = {'form': form, 'student': student}
+
+    return render(request, 'edit.html', context=context)
+
+
+def remove_student(request, pk):
+    student = get_object_or_404(Student, id=pk)
+    student.delete()
+    messages.success(request, 'You have successfully deleted student')
+
+    return HttpResponseRedirect(reverse('students:list'))

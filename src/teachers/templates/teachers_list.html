@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/teacher.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Righteous&subset=latin,cyrillic" rel="stylesheet"
+          type="text/css">
+    <link href="{% static 'css/teacher.css' %}" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <div class="page-header">
+        <h1>Teachers list</h1>
+    </div>
+    {% include 'messages.html' %}
+    <div class="post" align="center">
+        <a href="{% url 'home' %}" style="font-size: 20px;">Home &ensp;</a>
+        <a href="{% url 'teachers:index' %}" style="font-size: 20px;">Teachers app &ensp;</a>
+        <a href="{% url 'teachers:create' %}" style="font-size: 20px;">Create teacher  &ensp;</a>
+    </div>
+    <div class="table">
+        <h2>Teachers: {{ count }}</h2>
+        <table style="width:100%">
+            <tr>
+                <th style="width:130px">Id</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Age</th>
+                <th>Rank</th>
+                <th style="width:20%">Email</th>
+                <th style="width:200px">Action</th>
+                </tr>
+            {% for teacher in teachers %}
+                <tr>
+                <td>{{ teacher.id }}</td>
+                <td>{{ teacher.first_name }}</td>
+                <td>{{ teacher.last_name }}</td>
+                <td>{{ teacher.age }}</td>
+                <td>{{ teacher.rank }}</td>
+                <td>{{ teacher.email }}</td>
+                <td>
+                <a href="{% url 'teachers:edit' pk=teacher.id %}"><button class="button-table"> edit </button></a>
+                <a href="{% url 'teachers:remove' pk=teacher.id %}"><button class="button-table-del"> delete </button></a><br>
+                </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>>
+
+</body>
+</html>

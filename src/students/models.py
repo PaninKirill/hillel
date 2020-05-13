@@ -24,6 +24,7 @@ class Student(models.Model):
     first_name = models.CharField(max_length=64)
     last_name = models.CharField(max_length=64)
     age = models.PositiveSmallIntegerField()  # models.IntegerField
+    email = models.EmailField(unique=True, null=True)
 
     @property
     def full_name(self) -> str:
@@ -50,5 +51,6 @@ class Student(models.Model):
             last_name=fake.last_name(),
             age=random.randint(18, 25),
             grade=random.choice(Student.YEAR_IN_SCHOOL_CHOICES)[1],
+            email=fake.email(),
         )
         return student

@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Teacher</title>
+    <title>Teachers</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="{% static 'css/teacher.css' %}">
@@ -12,23 +12,19 @@
     <link href="{% static 'css/teacher.css' %}" type="text/css" rel="stylesheet">
 </head>
 <body>
-
 <div class="page-header">
-    <h1>Create teacher</h1>
+    <h1>Edit teacher</h1>
 </div>
 <div class="content-container">
     {% include 'messages.html' %}
-    <a href="{% url 'teachers:index' %}" style="font-size: 20px;">Teachers app</a>
-    <form method="post" style="font-size: 15px;">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="button" type="submit"> submit</button>
-            <button class="button" type="reset"> reset </button>
-            <a href="{% url 'teachers:list' %}"><button class="button" type="button"> cancel </button></a>
-
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="button" name="submit" type="submit"> submit</button>
+        <button class="button" type="reset"> reset </button>
+        <a href="{% url 'teachers:list' %}"><button class="button" type="button"> cancel </button></a>
+        <a href="{% url 'teachers:remove' pk=teacher.id %}"><button class="button-del" type="button"> delete </button></a><br>
     </form>
 </div>
-
-
 </body>
 </html>

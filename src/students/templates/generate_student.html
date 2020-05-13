@@ -3,20 +3,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create student</title>
+    <title>Hillel project</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="{% static 'css/student.css' %}">
     <link href="https://fonts.googleapis.com/css?family=Righteous&subset=latin,cyrillic" rel="stylesheet"
           type="text/css">
-    <link href="student.css" type="text/css" rel="stylesheet">
+    <link href="{% static 'css/student.css' %}" type="text/css" rel="stylesheet">
 </head>
 <body>
     <div class="page-header">
-        <h1><a>Create forms:</a></h1>
+        <h1>Student Info</h1>
     </div>
-    <div class="post">
-        <a href="/student/create_student/" style="font-size: 20px;">Create Student</a>
+    <div class="content-container">
+        <h3 align="center">Student: {{ student.info }}</h3>
+        <a href="{% url 'students:generate' %}"><button class="button" name="submit" type="submit"> generate </button></a>
+        <a href="{% url 'students:index' %}"><button class="button" name="submit" type="submit"> cancel </button></a>
     </div>
 
 </body>

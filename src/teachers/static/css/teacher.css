@@ -1,31 +1,199 @@
 h1 a {
-    padding-left: 500px;
-    padding-right:500px;
-    color: #A78BF4;
+    color: #00ccff;
     font-family: 'Righteous';
+    text-align: center;
+}
+
+h2 {
+    font-family: 'Righteous';
+    text-align: right;
+    font-size: 12pt;
+    padding-right: 25px;
+}
+
+h3 {
+    font-family: 'Righteous';
+    text-align: center;
+    font-size: 16pt;
 }
 
 body {
-    font-family: 'Righteous', sans-serif;
+    font-family: 'Righteous';
     font-weight: 100;
+    font-size: 12pt;
+}
+
+.post {
+    padding: 5px 5px 5px 5px;
+    background-color: #c9fbff;
+    font-family: 'Righteous';
+    font-weight: 100;
+    font-size: 12pt;
+}
+
+form {
+    padding: 20px 20px 20px 20px;
     text-align: center;
+}
+
+input[type=text] {
+    padding: 2px 5px;
+    margin: 2px ;
+    box-sizing: border-box;
+    border: 2px solid #b3f0ff;
+    border-radius: 4px;
+}
+
+input {
+    padding: 2px 5px;
+    margin: 2px ;
+    box-sizing: border-box;
+    border: 2px solid #b3f0ff;
+    border-radius: 4px;
+}
+
+select {
+    padding: 2px 5px;
+    margin: 2px ;
+    border-radius: 4px;
+    border: 2px solid #b3f0ff;
+    background-color: #ffffff;
 }
 
 .page-header {
-    background-color: #A78BF4;
+    background-color: #00ccff;
     margin-top: 0;
-    padding: 20px 20px 20px 20px;
-}
-
-.page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
-    color: #ffffff;
-    font-size: 36pt;
+    padding: 10px 10px 10px 10px;
+    text-align: center;
     text-decoration: none;
-
+    font-size: 36pt;
+    color: #ffffff;
 }
 
-.content  {
+.content-container  {
+    text-align: center;
+}
+
+.table {
+    padding: 1px 50px 50px 50px;
+    text-align: left;
+}
+
+.button {
+    background-color: #00ccff;
+    border: none;
+    color: white;
+    padding: 5px 14px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+.button-del {
+    background-color: #00ccff;
+    border: none;
+    color: #000000;
+    padding: 5px 14px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+
+.button-table {
+    background-color: #00ccff;
+    border: none;
+    color: #ffffff;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+.button-table-del {
+    background-color: #00ccff;
+    border: none;
+    color: #000000;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #00ccff;
+}
+
+li {
+    float: left;
+    border-right: 1px solid #ffffff;
+}
+
+li:last-child {
+    border-right: none;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color: #ffffff;
+}
+
+.active {
+    background-color: #9999d1;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: center;
+    padding: 8px;
+    border-right: 1px solid #c9fbff;
+    border: 1px solid #c9fbff;
+}
+
+tr:nth-child(even){background-color: #e6ffff}
+
+th {
+    background-color: #00ccff;
+    color: white;
     text-align: center;
 }
 
 
+::-moz-selection { /* Code for Firefox */
+    color: red;
+    background: yellow;
+}
+
+::selection {
+    color: red;
+    background: yellow;
+}
+
+.alert {
+    border: none;
+    text-align: center;
+}
