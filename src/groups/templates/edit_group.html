@@ -12,23 +12,20 @@
     <link href="{% static 'css/group.css' %}" type="text/css" rel="stylesheet">
 </head>
 <body>
-
 <div class="page-header">
-    <h1>Create group</h1>
+    <h1>Edit group</h1>
 </div>
 <div class="content-container">
     {% include 'messages.html' %}
-    <a href="{% url 'groups:index' %}" style="font-size: 20px;">Group app</a>
-    <form method="post" style="font-size: 15px;">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="button" type="submit"> submit</button>
-            <button class="button" type="reset"> reset </button>
-            <a href="{% url 'groups:list' %}"><button class="button" type="button"> cancel </button></a>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="button" name="submit" type="submit"> submit</button>
+        <button class="button" type="reset"> reset </button>
+        <a href="{% url 'groups:list' %}"><button class="button" type="button"> cancel </button></a>
+        <a href="{% url 'groups:remove' pk=group.id %}"><button class="button-del" type="button"> delete </button></a><br>
 
     </form>
 </div>
-
-
 </body>
 </html>
