@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Groups</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/group.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Righteous&subset=latin,cyrillic" rel="stylesheet"
+          type="text/css">
+    <link href="{% static 'css/group.css' %}" type="text/css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="page-header">
+        <h1>Groups list</h1>
+
+    </div>
+    {% include 'messages.html' %}
+    <div class="post" align="center">
+        <a href="{% url 'home' %}" style="font-size: 20px;">Home &ensp;</a>
+        <a href="{% url 'groups:index' %}" style="font-size: 20px;">Groups app &ensp;</a>
+        <a href="{% url 'groups:create' %}" style="font-size: 20px;">Create group &ensp;</a>
+    </div>
+    <div class="table">
+        <h2>Groups: {{ count }}</h2>
+        <table style="width:100%">
+            <tr>
+                <th style="width:130px">Id</th>
+                <th>Faculty</th>
+                <th style="width:800px">Specialization</th>
+                <th>Course</th>
+                <th style="width:200px">Action</th>
+                </tr>
+            {% for group in groups %}
+                <tr>
+                <td>{{ group.id }}</td>
+                <td>{{ group.faculty }}</td>
+                <td>{{ group.degree_specialization }}</td>
+                <td>{{ group.course }}</td>
+                <td>
+                <a href="{% url 'groups:edit' pk=group.id %}"><button class="button-table"> edit </button></a>
+                <a href="{% url 'groups:remove' pk=group.id %}"><button class="button-table-del"> delete </button></a><br>
+                </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>>
+
+</body>
+</html>

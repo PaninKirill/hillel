@@ -3,20 +3,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create group</title>
+    <title>Hillel project</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="{% static 'css/group.css' %}">
     <link href="https://fonts.googleapis.com/css?family=Righteous&subset=latin,cyrillic" rel="stylesheet"
           type="text/css">
-    <link href="group.css" type="text/css" rel="stylesheet">
+    <link href="{% static 'css/group.css' %}" type="text/css" rel="stylesheet">
 </head>
 <body>
     <div class="page-header">
-        <h1><a>Create forms:</a></h1>
+        <h1>Group Info</h1>
     </div>
-    <div class="post">
-        <a href="/group/create_group/" style="font-size: 20px;">Create Group</a>
+    <div class="content-container">
+        <h3 align="center">Group: {{ group.info }}</h3>
+        <a href="{% url 'groups:generate' %}"><button class="button" name="submit" type="submit"> generate </button></a>
+        <a href="{% url 'groups:index' %}"><button class="button" name="submit" type="submit"> cancel </button></a>
     </div>
+
 </body>
 </html>

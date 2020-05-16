@@ -29,6 +29,7 @@ class Teacher(models.Model):
     last_name = models.CharField(max_length=64)
     age = models.PositiveSmallIntegerField()
     rank = models.CharField(max_length=3, choices=TEACHERS_RANK, default='LR')
+    email = models.EmailField(unique=True, null=True)
 
     @property
     def full_name(self) -> str:
@@ -50,7 +51,8 @@ class Teacher(models.Model):
             first_name=fake.first_name(),
             last_name=fake.last_name(),
             age=random.randint(18, 25),
-            rank=random.choice(Teacher.TEACHERS_RANK)[0]
+            rank=random.choice(Teacher.TEACHERS_RANK)[0],
+            email=fake.email(),
         )
         teacher.save()
         return teacher

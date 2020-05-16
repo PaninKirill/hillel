@@ -27,7 +27,8 @@ class Command(BaseCommand):
                     first_name=fake.first_name(),
                     last_name=fake.last_name(),
                     age=random.randint(18, 25),
-                    grade=random.choice(Student.YEAR_IN_SCHOOL_CHOICES)[1]
+                    grade=random.choice(Student.YEAR_IN_SCHOOL_CHOICES)[1],
+                    email=fake.email(),
                 ))
             Student.objects.bulk_create(students)
 

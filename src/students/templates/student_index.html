@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/student.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Righteous&subset=latin,cyrillic" rel="stylesheet"
+          type="text/css">
+    <link href="{% static 'css/student.css' %}" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <div class="page-header">
+        <h1>Student APP</h1>
+    </div>
+    <ul>
+        <li><a href="{% url 'home' %}" style="font-size: 20px;">Home</a></li>
+        <li><a href="{% url 'students:list' %}" style="font-size: 20px;">Students List</a></li>
+        <li><a href="{% url 'students:create' %}" style="font-size: 20px;">Create student</a></li>
+        <li><a href="{% url 'students:generate' %}" style="font-size: 20px;">Generate student</a></li>
+        <li style="float:right"><a class="active" href="#">About</a></li>
+    </ul>
+
+</body>
+</html>

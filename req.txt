@@ -1,6 +1,7 @@
 backcall==0.1.0
 decorator==4.4.2
 Django==2.2
+django-debug-toolbar==2.2
 django-extensions==2.2.9
 entrypoints==0.3
 Faker==4.0.3
