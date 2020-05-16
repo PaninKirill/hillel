@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Students</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/student.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Righteous&subset=latin,cyrillic" rel="stylesheet"
+          type="text/css">
+    <link href="{% static 'css/student.css' %}" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div class="page-header">
+    <h1>Edit student</h1>
+</div>
+<div class="content-container">
+    {% include 'messages.html' %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="button" name="submit" type="submit"> submit</button>
+        <button class="button" type="reset"> reset </button>
+        <a href="{% url 'students:list' %}"><button class="button" type="button"> cancel </button></a>
+        <a href="{% url 'students:remove' pk=student.id %}"><button class="button-del" type="button"> delete </button></a><br>
+
+    </form>
+</div>
+</body>
+</html>

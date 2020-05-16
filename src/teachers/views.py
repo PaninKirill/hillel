@@ -1,18 +1,25 @@
 import random
 
 from django.apps import apps
+from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 
 from faker import Faker
 
+from teachers.forms import TeacherCreateForm
 from teachers.models import Teacher
 
 from utils import clear_table_parser, parse_usr_value
 
 
-def teacher_app(request):
-    return HttpResponse('Teacher app')
+def home(request):
+    return render(request, 'index.html')
+
+
+def teacher_app(request):  # main page
+    return render(request, 'teacher_index.html')
 
 
 def teachers(request):
@@ -24,7 +31,9 @@ def teachers(request):
     for teacher in teachers_queryset:
         response += teacher.info() + '<br/>'
 
-    return HttpResponse(response)
+    context = {'teachers': teachers_queryset, 'count': count}
+
+    return render(request, 'teachers_list.html', context=context)
 
 
 def generate_teacher(request):
@@ -34,13 +43,12 @@ def generate_teacher(request):
         last_name=fake.last_name(),
         age=random.randint(25, 75),
         rank=random.choice(Teacher.TEACHERS_RANK)[0],
+        email=fake.email(),
     )
-    response = f'Teacher: {teacher.info()}<br/>'
-
-    return HttpResponse(response)
+    return render(request, 'generate_teacher.html', context={'teacher': teacher})
 
 
-def sheets(request):
+def sheets(request):  # abandoned
     sheets_reg = [
         m._meta.db_table for c in apps.get_app_configs() for m in c.get_models()
     ]
@@ -48,7 +56,7 @@ def sheets(request):
     return HttpResponse(response)
 
 
-def clear_sheet(request):
+def clear_sheet(request):  # abandoned
     """
     :param request:
     /clear_sheet/tc/?clear=1&sheet_name=Teacher
@@ -65,7 +73,7 @@ def clear_sheet(request):
     return HttpResponse(response)
 
 
-def delete_row(request):
+def delete_row(request):  # abandoned
     """
     :param request:
     /del_row/tc/?id=49
@@ -82,7 +90,7 @@ def delete_row(request):
     return HttpResponse(response)
 
 
-def query_filter(request):
+def query_filter(request):  # abandoned
     """
     :param request:
     /filter/tc/?age=50&first_name=Elizabeth
@@ -110,7 +118,7 @@ def query_filter(request):
         'rank__endswith',
         'id',
         'order_by',
-     ]
+    ]
 
     response = f'Selected data:<br/>'
     teachers_queryset = Teacher.objects.all()
@@ -137,7 +145,7 @@ def query_filter(request):
     return HttpResponse(response)
 
 
-def generate_teachers(request):
+def generate_teachers(request):  # abandoned
     """
     :param request:
     generate_teachers/tc/?count=10
@@ -157,16 +165,13 @@ def generate_teachers(request):
             last_name=fake.last_name(),
             age=random.randint(25, 75),
             rank=random.choice(Teacher.TEACHERS_RANK)[0],
+            email=fake.email(),
         )
 
     for teacher in rand_teachers_queryset:
         response += teacher.info() + '<br/>'
 
     return HttpResponse(response)
-
-
-def t_index(request):
-    return render(request, 't_index.html')
 
 
 def create_teacher(request):
@@ -178,10 +183,36 @@ def create_teacher(request):
 
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/teacher/')
+            messages.success(request, 'You have successfully created teacher')
+            return HttpResponseRedirect(reverse('teachers:list'))
     else:
         form = TeacherCreateForm()
 
-    context = {'create_form': form}
+    context = {'form': form}
 
-    return render(request, 'create_student.html', context=context)
+    return render(request, 'create_teacher.html', context=context)
+
+
+def edit_teacher(request, pk):
+    teacher = get_object_or_404(Teacher, id=pk)
+    if request.method == 'POST':
+
+        form = TeacherCreateForm(request.POST, instance=teacher)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('teachers:list'))
+    else:
+        form = TeacherCreateForm(instance=teacher)
+
+    context = {'form': form, 'teacher': teacher}
+
+    return render(request, 'edit_teacher.html', context=context)
+
+
+def remove_teacher(request, pk):
+    teacher = get_object_or_404(Teacher, id=pk)
+    teacher.delete()
+    messages.success(request, 'You have successfully deleted teacher')
+
+    return HttpResponseRedirect(reverse('teachers:list'))
