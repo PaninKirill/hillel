@@ -25,6 +25,7 @@ class Student(models.Model):
     last_name = models.CharField(max_length=64)
     age = models.PositiveSmallIntegerField()  # models.IntegerField
     email = models.EmailField(unique=True, null=True)
+    phone = models.CharField(max_length=24, default='')
 
     @property
     def full_name(self) -> str:
@@ -52,5 +53,40 @@ class Student(models.Model):
             age=random.randint(18, 25),
             grade=random.choice(Student.YEAR_IN_SCHOOL_CHOICES)[1],
             email=fake.email(),
+            phone=fake.phone_number(),
         )
         return student
+
+    def save(self, *args, **kwargs):
+        check_existence = Student.objects.all().only('email').filter(
+            email__iexact=self.email
+        ).exclude(
+            email__iexact=self.email
+        )
+        if len(check_existence) != 0:
+            raise Exception(f'{self.email} already exists')
+        else:
+            super().save(*args, **kwargs)
+
+
+class Logger(models.Model):
+    method = models.CharField(max_length=128)
+    path = models.CharField(max_length=128)
+    execution_time = models.DecimalField(max_digits=4, decimal_places=4)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.method}, {self.path}, {self.execution_time}, {self.created}'
+
+    @staticmethod
+    def _check_log():
+        with open('middleware.log', 'a') as file:
+            logger_queryset = Logger.objects.all()
+            for log_data in logger_queryset:
+                file.write(
+                    f' {log_data.id},'
+                    f' {log_data.method},'
+                    f' {log_data.path},'
+                    f' {log_data.execution_time},'
+                    f' {log_data.created},'
+                    f' \n')

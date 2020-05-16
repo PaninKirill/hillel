@@ -43,6 +43,7 @@ def generate_student(request):
         age=random.randint(18, 25),
         grade=random.choice(Student.YEAR_IN_SCHOOL_CHOICES)[1],
         email=fake.email(),
+        phone=fake.phone_number(),
     )
 
     return render(request, 'generate_student.html', context={'student': student})
@@ -166,6 +167,7 @@ def generate_students(request):  # abandoned
             age=random.randint(18, 25),
             grade=random.choice(Student.YEAR_IN_SCHOOL_CHOICES)[1],
             email=fake.email(),
+            phone=fake.phone_number(),
         )
 
     for student in rand_students_queryset:

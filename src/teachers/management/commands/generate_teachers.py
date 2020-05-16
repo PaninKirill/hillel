@@ -29,6 +29,7 @@ class Command(BaseCommand):
                     age=random.randint(25, 75),
                     rank=random.choice(Teacher.TEACHERS_RANK)[1],
                     email=fake.email(),
+                    phone=fake.phone_number(),
                 ))
             Teacher.objects.bulk_create(teachers)
         if options['wipe']:
