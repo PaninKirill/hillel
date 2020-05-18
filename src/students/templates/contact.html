@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Student Tracker</title>
@@ -16,15 +16,18 @@
         <h1>STUDENT TRACKER</h1>
     </div>
     {% include 'messages.html' %}
-    <div class="content">
-        <ul>
-            <li><a href="{% url 'students:index' %}" style="font-size: 20px;">Students</a></li>
-            <li><a href="{% url 'teachers:index' %}" style="font-size: 20px;">Teachers</a></li>
-            <li><a href="{% url 'groups:index' %}" style="font-size: 20px;">Groups</a></li>
-            <li><a href="{% url 'students:contact' %}" style="font-size: 20px;">Contact</a></li>
-            <li style="float:right"><a class="active" href="#">About</a></li>
-        </ul>
-    </div>
+     <div class="content">
+         <h3 style="color: green"> Send us a message </h3>
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="button" type="submit"> submit</button>
+            <button class="button" type="reset"> reset</button>
+            <a href="{% url 'home' %}">
+                <button class="button" type="button"> cancel</button>
+            </a>
+        </form>
+     </div>
 </body>
 </html>
 

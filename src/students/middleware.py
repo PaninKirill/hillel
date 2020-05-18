@@ -1,6 +1,6 @@
 from time import time
 
-from students.models import Logger
+from students.tasks import url_logger
 
 
 class SimpleMiddleware:
@@ -17,10 +17,6 @@ class SimpleMiddleware:
         execution_time = execution_end - execution_start
 
         if request.path.startswith('/admin/'):
-            Logger.objects.create(
-                method=request.method,
-                path=request.path,
-                execution_time=execution_time,
-            )
+            url_logger.delay(request.method, request.path, execution_time)
 
         return response
