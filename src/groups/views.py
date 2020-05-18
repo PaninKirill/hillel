@@ -178,15 +178,9 @@ def create_group(request):
         form = GroupCreateForm(request.POST)
 
         if form.is_valid():
-            related_data = {i[0]: i[1] for i in Group.FACULTY_N_SPECIALIZATION}
-            faculty = form.data.get('faculty')
-            check_related = related_data.get(faculty)
-            for spec in check_related:
-                if spec[0] == form.data.get('degree_specialization'):
-                    form.save()
-                    messages.success(request, 'You have successfully created group')
-                    return HttpResponseRedirect(reverse('groups:list'))
-            messages.warning(request, 'Faculty does not much')
+            form.save()
+            messages.success(request, 'You have successfully created group')
+            return HttpResponseRedirect(reverse('groups:list'))
     else:
         form = GroupCreateForm()
 
@@ -202,16 +196,9 @@ def edit_group(request, pk):
         form = GroupCreateForm(request.POST, instance=group)
 
         if form.is_valid():
-            related_data = {i[0]: i[1] for i in Group.FACULTY_N_SPECIALIZATION}
-            faculty = form.data.get('faculty')
-            check_related = related_data.get(faculty)
-            for spec in check_related:
-                if spec[0] == form.data.get('degree_specialization'):
-                    form.save()
-                    messages.success(request, 'You have successfully changed group')
-                    return HttpResponseRedirect(reverse('groups:list'))
-
-            messages.warning(request, 'Faculty does not much')
+            form.save()
+            messages.success(request, 'You have successfully changed group')
+            return HttpResponseRedirect(reverse('groups:list'))
     else:
         form = GroupCreateForm(instance=group)
 

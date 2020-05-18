@@ -44,6 +44,7 @@ def generate_teacher(request):
         age=random.randint(25, 75),
         rank=random.choice(Teacher.TEACHERS_RANK)[0],
         email=fake.email(),
+        phone=fake.phone_number(),
     )
     return render(request, 'generate_teacher.html', context={'teacher': teacher})
 
@@ -166,6 +167,7 @@ def generate_teachers(request):  # abandoned
             age=random.randint(25, 75),
             rank=random.choice(Teacher.TEACHERS_RANK)[0],
             email=fake.email(),
+            phone=fake.phone_number(),
         )
 
     for teacher in rand_teachers_queryset:

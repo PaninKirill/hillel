@@ -1,5 +1,4 @@
-from django.conf import settings
-from django.urls import include, path
+from django.urls import path
 
 from students import views
 
@@ -14,10 +13,3 @@ urlpatterns = [
     path('remove/<int:pk>/', views.remove_student, name='remove'),
     path('generate/', views.generate_student, name='generate'),
 ]
-
-if settings.DEBUG:
-    import debug_toolbar
-
-    urlpatterns = [
-                      path('__debug__/', include(debug_toolbar.urls)),
-                  ] + urlpatterns

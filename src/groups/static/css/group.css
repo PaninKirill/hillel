@@ -25,10 +25,10 @@ body {
 
 .post {
     padding: 5px 5px 5px 5px;
-    background-color: #c9fbff;
     font-family: 'Righteous';
     font-weight: 100;
     font-size: 12pt;
+    background-color: #c9fbff;
 }
 
 form {
@@ -103,12 +103,23 @@ select {
     border-radius: 4px;
 }
 
-
 .button-table {
     background-color: #00ccff;
     border: none;
     color: #ffffff;
     padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+.button-main {
+    background-color: #00ccff;
+    border: none;
+    color: #ffffff;
+    padding: 5px 100px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -128,6 +139,45 @@ select {
     border-radius: 4px;
 }
 
+.button-table-del:hover {
+    background-color: red;
+    transition-duration: 0.4s;
+    color: white;
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.button-table:hover {
+    transition-duration: 0.4s;
+    color: green;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.button-main:hover {
+    transition-duration: 0.4s;
+    color: #000000;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.button:hover {
+    transition-duration: 0.4s;
+    color: #000000;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.button-del:hover {
+    background-color: red;
+    transition-duration: 0.4s;
+    color: white;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.errorlist li:last-child  {
+    list-style: none;
+    color: red;
+    background-color: #ffffff;
+    text-align: center;
+    float: none;
+    }
 
 ul {
     list-style-type: none;
@@ -135,12 +185,14 @@ ul {
     padding: 0;
     overflow: hidden;
     background-color: #00ccff;
+    text-align: center;
 }
 
 li {
     float: left;
     border-right: 1px solid #ffffff;
 }
+
 
 li:last-child {
     border-right: none;
@@ -184,13 +236,13 @@ th {
 
 
 ::-moz-selection { /* Code for Firefox */
-    color: red;
-    background: yellow;
+    color: white;
+    background: black;
 }
 
 ::selection {
-    color: red;
-    background: yellow;
+    color: white;
+    background: black;
 }
 
 .alert {
