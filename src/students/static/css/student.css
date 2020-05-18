@@ -103,7 +103,6 @@ select {
     border-radius: 4px;
 }
 
-
 .button-table {
     background-color: #00ccff;
     border: none;
@@ -140,6 +139,45 @@ select {
     border-radius: 4px;
 }
 
+.button-table-del:hover {
+    background-color: red;
+    transition-duration: 0.4s;
+    color: white;
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.button-table:hover {
+    transition-duration: 0.4s;
+    color: green;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.button-main:hover {
+    transition-duration: 0.4s;
+    color: #000000;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.button:hover {
+    transition-duration: 0.4s;
+    color: #000000;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.button-del:hover {
+    background-color: red;
+    transition-duration: 0.4s;
+    color: white;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.errorlist li:last-child  {
+    list-style: none;
+    color: red;
+    background-color: #ffffff;
+    text-align: center;
+    float: none;
+    }
 
 ul {
     list-style-type: none;
@@ -198,13 +236,13 @@ th {
 
 
 ::-moz-selection { /* Code for Firefox */
-    color: red;
-    background: yellow;
+    color: white;
+    background: black;
 }
 
 ::selection {
-    color: red;
-    background: yellow;
+    color: white;
+    background: black;
 }
 
 .alert {

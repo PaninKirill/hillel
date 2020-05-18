@@ -30,6 +30,7 @@
                 <th>Last name</th>
                 <th>Age</th>
                 <th>Rank</th>
+                <th>Phone</th>
                 <th style="width:20%">Email</th>
                 <th style="width:200px">Action</th>
                 </tr>
@@ -40,6 +41,7 @@
                 <td>{{ teacher.last_name }}</td>
                 <td>{{ teacher.age }}</td>
                 <td>{{ teacher.rank }}</td>
+                <td>{{ teacher.phone }}</td>
                 <td>{{ teacher.email }}</td>
                 <td>
                 <a href="{% url 'teachers:edit' pk=teacher.id %}"><button class="button-table"> edit </button></a>
