@@ -6,7 +6,6 @@ from django.core.mail import send_mail
 from django.utils import timezone
 
 
-#
 # @shared_task
 # def slow_func(num=10):
 #     from time import sleep
