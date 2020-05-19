@@ -16,11 +16,10 @@ class StudentCreateForm(forms.ModelForm):
             'phone',
         )
 
-        # def clean_phone(self):  # clean_ + field
+    # def clean_phone(self):  # clean_ + field
         """
         auto-cleaner phone after form submit
         """
-
     #     phone = self.cleaned_data['phone']
     #     cleaned_phone = ''.join(i for i in phone if i.isdigit())
     #     return cleaned_phone

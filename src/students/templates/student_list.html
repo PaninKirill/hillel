@@ -3,7 +3,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+<<<<<<< HEAD
     <meta name="viewport" content="width=device-width, initial-scale=1">
+=======
+>>>>>>> a22def234f27f03ebb7980bae32a3c22be9990b9
     <title>Students</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
@@ -13,8 +16,15 @@
     <link href="{% static 'css/student.css' %}" type="text/css" rel="stylesheet">
 </head>
 <body>
+<<<<<<< HEAD
     <div class="header" id="st-header">
         <h1>Students list</h1>
+=======
+
+    <div class="page-header">
+        <h1>Students list</h1>
+
+>>>>>>> a22def234f27f03ebb7980bae32a3c22be9990b9
     </div>
     {% include 'messages.html' %}
     <div class="post" align="center">
@@ -22,6 +32,7 @@
         <a href="{% url 'students:index' %}" style="font-size: 20px;">Students app &ensp;</a>
         <a href="{% url 'students:create' %}" style="font-size: 20px;">Create student &ensp;</a>
     </div>
+<<<<<<< HEAD
     <div class="content">
         <h2>Students: {{ count }}</h2>
         <table style="width:100%">
@@ -30,6 +41,16 @@
                 <th>First name</th>
                 <th>Last name</th>
                 <th >Age</th>
+=======
+    <div class="table">
+        <h2>Students: {{ count }}</h2>
+        <table style="width:100%">
+            <tr>
+                <th style="width:130px">Id</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Age</th>
+>>>>>>> a22def234f27f03ebb7980bae32a3c22be9990b9
                 <th>Grade</th>
                 <th>Phone</th>
                 <th style="width:20%">Email</th>
@@ -37,6 +58,7 @@
                 </tr>
             {% for student in students %}
                 <tr>
+<<<<<<< HEAD
                 <td style="text-align: center">{{ student.id }}</td>
                 <td>{{ student.first_name }}</td>
                 <td>{{ student.last_name }}</td>
@@ -45,6 +67,16 @@
                 <td>{{ student.phone }}</td>
                 <td>{{ student.email }}</td>
                 <td style="text-align: center">
+=======
+                <td>{{ student.id }}</td>
+                <td>{{ student.first_name }}</td>
+                <td>{{ student.last_name }}</td>
+                <td>{{ student.age }}</td>
+                <td>{{ student.grade }}</td>
+                <td>{{ student.phone }}</td>
+                <td>{{ student.email }}</td>
+                <td>
+>>>>>>> a22def234f27f03ebb7980bae32a3c22be9990b9
                 <a href="{% url 'students:edit' pk=student.id %}"><button class="button-table"> edit </button></a>
                 <a href="{% url 'students:remove' pk=student.id %}"><button class="button-table-del"> delete </button></a><br>
                 </td>
@@ -52,6 +84,7 @@
             {% endfor %}
         </table>
     </div>>
+<<<<<<< HEAD
     <script>
         window.onscroll = function() {sticky_header()};
 
@@ -66,5 +99,8 @@
           }
         }
     </script>
+=======
+
+>>>>>>> a22def234f27f03ebb7980bae32a3c22be9990b9
 </body>
 </html>
