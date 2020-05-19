@@ -1,6 +1,5 @@
 import os
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from celery.schedules import crontab
 
@@ -125,7 +124,6 @@ INTERNAL_IPS = [
 ]
 
 CELERY_BROKER_URL = 'amqp://localhost'
-
 
 CELERY_BEAT_SCHEDULE = {
     'beat': {
