@@ -225,15 +225,6 @@ def contact_us(request):
         form = ContactUsForm(request.POST)
         if form.is_valid():
             form.save()
-            # issue = form.cleaned_data["issue"]
-            # username = form.cleaned_data["username"]
-            # subject = form.cleaned_data["subject"]
-            # message = form.cleaned_data["message"]
-            # email = form.cleaned_data["email"]
-            # rabbitMQ
-            # email_sender.apply_async(args=[issue, username, subject, message, email], countdown=3)
-            # async - for fun
-            # rabbitMQ
             messages.success(request, 'You have successfully submitted form')
     else:
         form = ContactUsForm()
