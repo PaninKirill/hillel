@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Students</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
@@ -12,10 +13,8 @@
     <link href="{% static 'css/student.css' %}" type="text/css" rel="stylesheet">
 </head>
 <body>
-
-    <div class="page-header">
+    <div class="header" id="st-header">
         <h1>Students list</h1>
-
     </div>
     {% include 'messages.html' %}
     <div class="post" align="center">
@@ -23,14 +22,14 @@
         <a href="{% url 'students:index' %}" style="font-size: 20px;">Students app &ensp;</a>
         <a href="{% url 'students:create' %}" style="font-size: 20px;">Create student &ensp;</a>
     </div>
-    <div class="table">
+    <div class="content">
         <h2>Students: {{ count }}</h2>
         <table style="width:100%">
             <tr>
-                <th style="width:130px">Id</th>
+                <th>Id</th>
                 <th>First name</th>
                 <th>Last name</th>
-                <th>Age</th>
+                <th >Age</th>
                 <th>Grade</th>
                 <th>Phone</th>
                 <th style="width:20%">Email</th>
@@ -38,14 +37,14 @@
                 </tr>
             {% for student in students %}
                 <tr>
-                <td>{{ student.id }}</td>
+                <td style="text-align: center">{{ student.id }}</td>
                 <td>{{ student.first_name }}</td>
                 <td>{{ student.last_name }}</td>
-                <td>{{ student.age }}</td>
+                <td style="text-align: center">{{ student.age }}</td>
                 <td>{{ student.grade }}</td>
                 <td>{{ student.phone }}</td>
                 <td>{{ student.email }}</td>
-                <td>
+                <td style="text-align: center">
                 <a href="{% url 'students:edit' pk=student.id %}"><button class="button-table"> edit </button></a>
                 <a href="{% url 'students:remove' pk=student.id %}"><button class="button-table-del"> delete </button></a><br>
                 </td>
@@ -53,6 +52,19 @@
             {% endfor %}
         </table>
     </div>>
+    <script>
+        window.onscroll = function() {sticky_header()};
 
+        var header = document.getElementById("st-header");
+        var sticky = header.offsetTop;
+
+        function sticky_header() {
+          if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+          } else {
+            header.classList.remove("sticky");
+          }
+        }
+    </script>
 </body>
 </html>

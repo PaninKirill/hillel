@@ -8,7 +8,7 @@ from django.urls import reverse
 
 from faker import Faker
 
-from students.forms import StudentCreateForm
+from students.forms import ContactUsForm, StudentCreateForm
 from students.models import Student
 
 from utils import clear_table_parser, parse_usr_value
@@ -218,3 +218,18 @@ def remove_student(request, pk):
     messages.success(request, 'You have successfully deleted student')
 
     return HttpResponseRedirect(reverse('students:list'))
+
+
+def contact_us(request):
+    if request.method == 'POST':
+        form = ContactUsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'You have successfully submitted form')
+    else:
+        form = ContactUsForm()
+    return render(request, 'contact.html', context={'form': form})
+
+# def slow(request):
+#     slow_func.delay()
+#     return HttpResponse('SLOW')
