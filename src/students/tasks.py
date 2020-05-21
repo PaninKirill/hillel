@@ -50,6 +50,6 @@ def email_sender(issue, username, subject, message, email):
         subject=f'Department: {issue}, Subject: {subject}',
         message=f'From:{username}, {email}, {message}',
         from_email='devs.ops.tests@gmail.com',
-        recipient_list=['devs.ops.tests@gmail.com', 'panin.kirill@gmail.com', 'dmytro.kaminskyi92@gmail.com', ],
+        recipient_list=['devs.ops.tests@gmail.com', 'panin.kirill@gmail.com', ],
         fail_silently=False,
     )
