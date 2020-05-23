@@ -66,15 +66,11 @@ class Group(models.Model):
          ),
     ]
 
-    faculty = models.CharField(
-        max_length=64,
-        choices=FACULTY
-    )
-    degree_specialization = models.CharField(
-        max_length=64,
-        choices=FACULTY_N_SPECIALIZATION,
-    )
+    faculty = models.CharField(max_length=64, choices=FACULTY)
+    degree_specialization = models.CharField(max_length=64, choices=FACULTY_N_SPECIALIZATION)
     course = models.IntegerField()
+    head = models.OneToOneField('students.Student', on_delete=models.SET_NULL, null=True)
+    supervisor = models.ForeignKey('teachers.Teacher', on_delete=models.SET_NULL, null=True)
 
     def info(self) -> str:
         return f'{self.id} {self.faculty} {self.degree_specialization} {self.course}'

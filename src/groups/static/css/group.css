@@ -1,7 +1,8 @@
-h1 a {
+h1  {
     color: #00ccff;
     font-family: 'Righteous';
     text-align: center;
+    color: green;
 }
 
 h2 {
@@ -20,27 +21,28 @@ h3 {
 body {
     font-family: 'Righteous';
     font-weight: 100;
-    font-size: 12pt;
 }
 
-.post {
-    padding: 5px 5px 5px 5px;
+.links {
+    margin: 10px;
     font-family: 'Righteous';
-    font-weight: 100;
     font-size: 12pt;
-    background-color: #c9fbff;
+    background-color: #555;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 form {
-    padding: 20px 20px 20px 20px;
+    padding: 10px;
     text-align: center;
 }
+
+
 
 input[type=text] {
     padding: 2px 5px;
     margin: 2px ;
     box-sizing: border-box;
-    border: 2px solid #b3f0ff;
+    border: 2px solid #555;
     border-radius: 4px;
 }
 
@@ -48,7 +50,15 @@ input {
     padding: 2px 5px;
     margin: 2px ;
     box-sizing: border-box;
-    border: 2px solid #b3f0ff;
+    border: 2px solid #555;
+    border-radius: 4px;
+}
+
+textarea {
+    padding: 2px 5px;
+    margin: 2px ;
+    box-sizing: border-box;
+    border: 2px solid #555;
     border-radius: 4px;
 }
 
@@ -56,31 +66,17 @@ select {
     padding: 2px 5px;
     margin: 2px ;
     border-radius: 4px;
-    border: 2px solid #b3f0ff;
+    border: 2px solid #555;
     background-color: #ffffff;
 }
 
-.page-header {
-    background-color: #00ccff;
-    margin-top: 0;
-    padding: 10px 10px 10px 10px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 36pt;
-    color: #ffffff;
-}
 
 .content-container  {
     text-align: center;
 }
 
-.table {
-    padding: 1px 50px 50px 50px;
-    text-align: left;
-}
-
 .button {
-    background-color: #00ccff;
+    background-color: #555;
     border: none;
     color: white;
     padding: 5px 14px;
@@ -104,7 +100,7 @@ select {
 }
 
 .button-table {
-    background-color: #00ccff;
+    background-color: #555;
     border: none;
     color: #ffffff;
     padding: 5px 15px;
@@ -128,9 +124,9 @@ select {
 }
 
 .button-table-del {
-    background-color: #00ccff;
+    background-color: #555;
     border: none;
-    color: #000000;
+    color: #ffffff;
     padding: 5px 15px;
     text-align: center;
     text-decoration: none;
@@ -143,7 +139,7 @@ select {
     background-color: red;
     transition-duration: 0.4s;
     color: white;
-      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 .button-table:hover {
@@ -179,12 +175,13 @@ select {
     float: none;
     }
 
+
 ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #00ccff;
+    background-color: #555;
     text-align: center;
 }
 
@@ -200,7 +197,7 @@ li:last-child {
 
 li a {
     display: block;
-    color: white;
+    color: #f1f1f1;
     text-align: center;
     padding: 8px 16px;
     text-decoration: none;
@@ -211,27 +208,33 @@ li a:hover:not(.active) {
 }
 
 .active {
-    background-color: #9999d1;
+    color green;
+    background-color: green;
 }
 
 table {
+
     border-collapse: collapse;
     width: 100%;
 }
 
-th, td {
-    text-align: center;
+td {
+    text-align: left;
     padding: 8px;
     border-right: 1px solid #c9fbff;
     border: 1px solid #c9fbff;
 }
 
-tr:nth-child(even){background-color: #e6ffff}
+tr:nth-child(even){background-color: #f1f1f1}
 
 th {
-    background-color: #00ccff;
+    background-color: #555;
+    padding: 8px;
     color: white;
+    border-right: 1px solid #c9fbff;
+    border: 1px solid #c9fbff;
     text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 
@@ -246,6 +249,45 @@ th {
 }
 
 .alert {
+    padding: 5px;
     border: none;
     text-align: center;
+}
+
+.top-container {
+  background-color: #f1f1f1;
+  padding: 30px;
+  text-align: center;
+}
+
+.header {
+    background-color: #555;
+    padding: 14px;
+    margin-top: 0;
+    text-align: center;
+    text-decoration: none;
+    font-size: 36pt;
+    color: #f1f1f1;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.content {
+  padding: 5px;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.sticky + .content {
+  padding-top: 102px;
+}
+
+
+.pagination {
+    text-align: center;
+    margin-top: 1px;
+    width: 100%;
 }

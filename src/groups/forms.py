@@ -10,6 +10,8 @@ class GroupCreateForm(forms.ModelForm):
             'faculty',
             'degree_specialization',
             'course',
+            'head',
+            'supervisor',
         )
 
     def clean_course(self):  # clean_ + field

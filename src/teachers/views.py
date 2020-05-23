@@ -2,12 +2,14 @@ import random
 
 from django.apps import apps
 from django.contrib import messages
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
 from faker import Faker
 
+from teachers.filters import TeacherFilter
 from teachers.forms import TeacherCreateForm
 from teachers.models import Teacher
 
@@ -24,14 +26,21 @@ def teacher_app(request):  # main page
 
 def teachers(request):
     count = Teacher.objects.count()
-    teachers_queryset = Teacher.objects.all()
+    teachers_queryset_list = Teacher.objects.all()
 
-    response = f'Teachers: {count}<br/>'
+    t_filter = TeacherFilter(request.GET, queryset=teachers_queryset_list)
+    teachers_queryset_list = t_filter.qs
 
-    for teacher in teachers_queryset:
-        response += teacher.info() + '<br/>'
+    paginator = Paginator(teachers_queryset_list, 10)
+    page = request.GET.get('page')
+    try:
+        teachers_queryset = paginator.page(page)
+    except PageNotAnInteger:
+        teachers_queryset = paginator.page(1)
+    except EmptyPage:
+        teachers_queryset = paginator.page(paginator.num_pages)
 
-    context = {'teachers': teachers_queryset, 'count': count}
+    context = {'teachers': teachers_queryset, 'count': count, 't_filter': t_filter}
 
     return render(request, 'teachers_list.html', context=context)
 

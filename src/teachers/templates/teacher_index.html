@@ -12,16 +12,17 @@
     <link href="{% static 'css/teacher.css' %}" type="text/css" rel="stylesheet">
 </head>
 <body>
-    <div class="page-header">
+    <div class="header" id="st-header">
         <h1>Teachers APP</h1>
     </div>
-    <ul>
-        <li><a href="{% url 'home' %}" style="font-size: 20px;">Home</a></li>
-        <li><a href="{% url 'teachers:list' %}" style="font-size: 20px;">Teachers List</a></li>
-        <li><a href="{% url 'teachers:create' %}" style="font-size: 20px;">Create teacher</a></li>
-        <li><a href="{% url 'teachers:generate' %}" style="font-size: 20px;">Generate teacher</a></li>
-        <li style="float:right"><a class="active" href="#about">About</a></li>
-    </ul>
-
+    <div class="content">
+        <ul>
+            <li><a href="{% url 'home' %}" style="font-size: 20px;">Home</a></li>
+            <li><a href="{% url 'teachers:list' %}" style="font-size: 20px;">Teachers List</a></li>
+            <li><a href="{% url 'teachers:create' %}" style="font-size: 20px;">Create teacher</a></li>
+            <li><a href="{% url 'teachers:generate' %}" style="font-size: 20px;">Generate teacher</a></li>
+            <li style="float:right"><a class="active" href="#about">About</a></li>
+        </ul>
+    </div>
 </body>
 </html>

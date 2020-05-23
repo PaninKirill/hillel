@@ -12,41 +12,67 @@
     <link href="{% static 'css/group.css' %}" type="text/css" rel="stylesheet">
 </head>
 <body>
-
-    <div class="page-header">
-        <h1>Groups list</h1>
-
+     <div class="header">
+        <h1>Groups List</h1>
     </div>
+
     {% include 'messages.html' %}
-    <div class="post" align="center">
+
+    <div class="links" align="center">
         <a href="{% url 'home' %}" style="font-size: 20px;">Home &ensp;</a>
         <a href="{% url 'groups:index' %}" style="font-size: 20px;">Groups app &ensp;</a>
         <a href="{% url 'groups:create' %}" style="font-size: 20px;">Create group &ensp;</a>
     </div>
-    <div class="table">
-        <h2>Groups: {{ count }}</h2>
+     <h2>Groups count: {{ count }}</h2>
+    <div>
+        <form method="get">
+            {{gr_filter.form}}
+            <button class="button-table" type="submit">Search</button>
+        </form>
+    </div>
+     <div class="table">
         <table style="width:100%">
             <tr>
                 <th style="width:130px">Id</th>
                 <th>Faculty</th>
-                <th style="width:800px">Specialization</th>
+                <th style="width:500px">Specialization</th>
                 <th>Course</th>
+                <th>Head</th>
+                <th>Supervisor</th>
                 <th style="width:200px">Action</th>
                 </tr>
             {% for group in groups %}
                 <tr>
-                <td>{{ group.id }}</td>
+                <td style="text-align: center">{{ group.id }}</td>
                 <td>{{ group.faculty }}</td>
                 <td>{{ group.degree_specialization }}</td>
-                <td>{{ group.course }}</td>
-                <td>
+                <td style="text-align: center">{{ group.course }}</td>
+                <td>{{ group.head }}</td>
+                <td>{{ group.supervisor }}</td>
+                <td style="text-align: center">
                 <a href="{% url 'groups:edit' pk=group.id %}"><button class="button-table"> edit </button></a>
                 <a href="{% url 'groups:remove' pk=group.id %}"><button class="button-table-del"> delete </button></a><br>
                 </td>
                 </tr>
             {% endfor %}
         </table>
-    </div>>
+     </div>
+     <div class="pagination">
+         <span class="step-links">
+             {% if groups.has_previous %}
+             <a href="?page=1">&laquo; first</a>
+             <a href="?page={{ groups.previous_page_number }}">previous</a>
+             {% endif %}
 
+             <span class="current">
+                 Page {{ groups.number }} of {{ groups.paginator.num_pages }}.
+             </span>
+
+             {% if groups.has_next %}
+             <a href="?page={{ groups.next_page_number }}">next</a>
+             <a href="?page={{ groups.paginator.num_pages }}">last &raquo;</a>
+             {% endif %}
+         </span>
+     </div>
 </body>
 </html>
