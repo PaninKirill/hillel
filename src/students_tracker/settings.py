@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'debug_toolbar',
     'silk',
+    'django_filters',
 
     # custom
     'students',

@@ -12,17 +12,23 @@
     <link href="{% static 'css/teacher.css' %}" type="text/css" rel="stylesheet">
 </head>
 <body>
-    <div class="page-header">
+    <div class="header" id="st-header">
         <h1>Teachers list</h1>
     </div>
     {% include 'messages.html' %}
-    <div class="post" align="center">
+    <div class="links" align="center">
         <a href="{% url 'home' %}" style="font-size: 20px;">Home &ensp;</a>
         <a href="{% url 'teachers:index' %}" style="font-size: 20px;">Teachers app &ensp;</a>
         <a href="{% url 'teachers:create' %}" style="font-size: 20px;">Create teacher  &ensp;</a>
     </div>
-    <div class="table">
-        <h2>Teachers: {{ count }}</h2>
+    <h2>Teachers: {{ count }}</h2>
+    <div>
+        <form method="get">
+            {{t_filter.form}}
+            <button class="button-table" type="submit">Search</button>
+        </form>
+    </div>
+    <div class="content">
         <table style="width:100%">
             <tr>
                 <th style="width:130px">Id</th>
@@ -32,18 +38,20 @@
                 <th>Rank</th>
                 <th>Phone</th>
                 <th style="width:20%">Email</th>
+                <th>Group</th>
                 <th style="width:200px">Action</th>
                 </tr>
             {% for teacher in teachers %}
                 <tr>
-                <td>{{ teacher.id }}</td>
+                <td style="text-align: center">{{ teacher.id }}</td>
                 <td>{{ teacher.first_name }}</td>
                 <td>{{ teacher.last_name }}</td>
-                <td>{{ teacher.age }}</td>
+                <td style="text-align: center">{{ teacher.age }}</td>
                 <td>{{ teacher.rank }}</td>
                 <td>{{ teacher.phone }}</td>
                 <td>{{ teacher.email }}</td>
-                <td>
+                <td>{{ teacher.group }}</td>
+                <td style="text-align: center">
                 <a href="{% url 'teachers:edit' pk=teacher.id %}"><button class="button-table"> edit </button></a>
                 <a href="{% url 'teachers:remove' pk=teacher.id %}"><button class="button-table-del"> delete </button></a><br>
                 </td>
@@ -51,6 +59,23 @@
             {% endfor %}
         </table>
     </div>>
+    <div class="pagination">
+         <span class="step-links">
+             {% if teachers.has_previous %}
+             <a href="?page=1">&laquo; first</a>
+             <a href="?page={{ teachers.previous_page_number }}">previous</a>
+             {% endif %}
+
+             <span class="current">
+                 Page {{ teachers.number }} of {{ teachers.paginator.num_pages }}.
+             </span>
+
+             {% if teachers.has_next %}
+             <a href="?page={{ teachers.next_page_number }}">next</a>
+             <a href="?page={{ teachers.paginator.num_pages }}">last &raquo;</a>
+             {% endif %}
+         </span>
+    </div>
 
 </body>
 </html>

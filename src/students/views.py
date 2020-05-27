@@ -2,12 +2,14 @@ import random
 
 from django.apps import apps
 from django.contrib import messages
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
 from faker import Faker
 
+from students.filters import StudentFilter
 from students.forms import ContactUsForm, StudentCreateForm
 from students.models import Student
 
@@ -23,14 +25,22 @@ def students_app(request):
 
 
 def students(request):
-    count = Student.objects.count()  # SELECT COUNT(*) FROM students_student;
-    students_queryset = Student.objects.all()  # SELECT * FROM students_student;
+    count = Student.objects.count()
+    students_queryset_list = Student.objects.all().select_related('group')
 
-    response = f'Students: {count}<br/>'
+    st_filter = StudentFilter(request.GET, queryset=students_queryset_list)
+    students_queryset_list = st_filter.qs
 
-    for student in students_queryset:
-        response += student.info() + '<br/>'
-    context = {'students': students_queryset, 'count': count}
+    paginator = Paginator(students_queryset_list, 10)
+    page = request.GET.get('page')
+    try:
+        students_queryset = paginator.page(page)
+    except PageNotAnInteger:
+        students_queryset = paginator.page(1)
+    except EmptyPage:
+        students_queryset = paginator.page(paginator.num_pages)
+
+    context = {'students': students_queryset, 'count': count, 'st_filter': st_filter}
 
     return render(request, 'student_list.html', context=context)
 

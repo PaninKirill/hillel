@@ -4,6 +4,10 @@ from django.core.management.base import BaseCommand
 
 from groups.models import Group
 
+from students.models import Student
+
+from teachers.models import Teacher
+
 
 class Command(BaseCommand):
     help = 'generates random groups'  # noqa  help is python builtins but django command requires it.
@@ -27,6 +31,8 @@ class Command(BaseCommand):
                     faculty=set_faculty,
                     degree_specialization=set_degree[1],
                     course=random.randint(1, 5),
+                    head=Student.add_student(),
+                    supervisor=Teacher.objects.order_by('?').last(),
                 ))
             Group.objects.bulk_create(groups)
         if options['wipe']:

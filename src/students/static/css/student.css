@@ -1,7 +1,8 @@
-h1 a {
+h1  {
     color: #00ccff;
     font-family: 'Righteous';
     text-align: center;
+    color: green;
 }
 
 h2 {
@@ -22,15 +23,16 @@ body {
     font-weight: 100;
 }
 
-.post {
-    padding: 5px 5px 5px 5px;
+.links {
+    margin: 10px;
     font-family: 'Righteous';
     font-size: 12pt;
     background-color: #555;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
 form {
-    padding: 20px 20px 20px 20px;
+    padding: 10px;
     text-align: center;
 }
 
@@ -270,7 +272,7 @@ th {
 }
 
 .content {
-  padding: 16px;
+  padding: 5px;
 }
 
 .sticky {
@@ -281,4 +283,11 @@ th {
 
 .sticky + .content {
   padding-top: 102px;
+}
+
+
+.pagination {
+    text-align: center;
+    margin-top: 1px;
+    width: 100%;
 }

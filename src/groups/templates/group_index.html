@@ -12,16 +12,17 @@
     <link href="{% static 'css/group.css' %}" type="text/css" rel="stylesheet">
 </head>
 <body>
-    <div class="page-header">
+    <div class="header">
         <h1>Group APP</h1>
     </div>
-    <ul>
-        <li><a href="{% url 'home' %}" style="font-size: 20px;">Home</a></li>
-        <li><a href="{% url 'groups:list' %}" style="font-size: 20px;">Groups List</a></li>
-        <li><a href="{% url 'groups:create' %}" style="font-size: 20px;">Create group</a></li>
-        <li><a href="{% url 'groups:generate' %}" style="font-size: 20px;">Generate group</a></li>
-        <li style="float:right"><a class="active" href="#about">About</a></li>
-    </ul>
-
+    <div class="content">
+        <ul>
+            <li><a href="{% url 'home' %}" style="font-size: 20px;">Home</a></li>
+            <li><a href="{% url 'groups:list' %}" style="font-size: 20px;">Groups List</a></li>
+            <li><a href="{% url 'groups:create' %}" style="font-size: 20px;">Create group</a></li>
+            <li><a href="{% url 'groups:generate' %}" style="font-size: 20px;">Generate group</a></li>
+            <li style="float:right"><a class="active" href="#about">About</a></li>
+        </ul>
+    </div>
 </body>
 </html>

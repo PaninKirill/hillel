@@ -2,10 +2,12 @@ import random
 
 from django.apps import apps
 from django.contrib import messages
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
+from groups.filters import GroupFilter
 from groups.forms import GroupCreateForm
 from groups.models import Group
 
@@ -22,14 +24,21 @@ def group_app(request):  # main page
 
 def groups(request):
     count = Group.objects.count()
-    groups_queryset = Group.objects.all()
+    groups_queryset_list = Group.objects.all().select_related('head', 'supervisor')
 
-    response = f'Groups: {count}<br/>'
+    gr_filter = GroupFilter(request.GET, queryset=groups_queryset_list)
+    groups_queryset_list = gr_filter.qs
 
-    for group in groups_queryset:
-        response += group.info() + '<br/>'
+    paginator = Paginator(groups_queryset_list, 10)
+    page = request.GET.get('page')
+    try:
+        groups_queryset = paginator.page(page)
+    except PageNotAnInteger:
+        groups_queryset = paginator.page(1)
+    except EmptyPage:
+        groups_queryset = paginator.page(paginator.num_pages)
 
-    context = {'groups': groups_queryset, 'count': count}
+    context = {'groups': groups_queryset, 'count': count, 'gr_filter': gr_filter}
 
     return render(request, 'groups_list.html', context=context)
 

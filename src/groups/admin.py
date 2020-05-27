@@ -3,19 +3,10 @@ from django.contrib import admin
 from groups.models import Group
 
 
-class StudentAdmin(admin.ModelAdmin):
-    list_per_page = 10
-    list_display = ('id', 'faculty', 'degree_specialization', 'course',)
-    fields = ('faculty', 'degree_specialization', 'course',)
-    readonly_fields = ('faculty',)
-
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-
-        if not request.user.is_superuser:
-            queryset = queryset.filter(course__lte=5)
-
-        return queryset
+class GroupAdmin(admin.ModelAdmin):
+    list_per_page = 15
+    list_display = ['faculty', 'degree_specialization', 'course', 'head', 'supervisor']
+    list_select_related = ['head', 'supervisor']
 
 
-admin.site.register(Group, StudentAdmin)
+admin.site.register(Group, GroupAdmin)
